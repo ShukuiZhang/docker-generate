@@ -11,7 +11,7 @@ RUN apt-get update && apt-get upgrade -y
 RUN pip install dlib # install dlib
 
 docker build -f keras-dlib.docker -t keras-dlib:1 . # build the docker image
-docker run -it -v /data:/data -v /home/shukui/Nauto/distraction/resnet_hyperface_keras:/data/shukui --runtime=nvidia -- name shukui-keras-dlib keras-dlib:shukui bash # run the container
+docker run -it -v /data:/data -v /home/shukui/Nauto/distraction/resnet_hyperface_keras:/data/shukui --runtime=nvidia --name shukui-keras-dlib keras-dlib:shukui bash # run the container
 
 # apt-get install vim
 '''
