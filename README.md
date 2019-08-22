@@ -10,6 +10,6 @@ RUN apt-get install -y libboost-python-dev cmake vim python-matplotlib python-nu
 RUN pip install opencv-python scikit-image mtcnn
 
 docker build -f keras-dlib.docker -t keras-dlib:1 . # build the docker image
-docker run -it -v /data:/data -v /home/shukui/Nauto/distraction/resnet_hyperface_keras:/data/shukui --runtime=nvidia --name shukui-keras-dlib keras-dlib:shukui bash # run the container
+docker run -it -v /data:/data -v /home:/home -v /data16:/data16 --runtime=nvidia --name shukui-keras-dlib keras-dlib:shukui bash # run the container
 
 '''
