@@ -1,15 +1,55 @@
+# how to create a docker container
+Introduce how to create a docker containfer from scratch.
+## sample structure
+Assume a file structure looks like the following:
 ```
-vim keras-dlib.docker # create a docker file
+├── base_image
+│   ├── Dockerfile
+│   └── requirements.txt
+├── Dockerfile
+├── __init__.py
+├── ReadMe.md
+├── utils.py
+├── video.mp4
+└── visualization.py
+```
+### base_image/Dockerfile
+```
+FROM nvidia/cuda:10.0-cudnn7-runtime-ubuntu16.04
 
-# in the docker file
-FROM keras:latest 
-USER root 
-RUN apt-get update && apt-get upgrade -y
-RUN apt-get install -y python-dev python-pip && pip install --upgrade pip
-RUN apt-get install -y libboost-python-dev cmake vim python-matplotlib python-numpy python-pil python-scipy curl
-RUN pip install opencv-python scikit-image mtcnn
+COPY requirements.txt /tmp/requirements.txt
 
-docker build -f keras-dlib.docker -t keras-dlib:1 . # build the docker image
-docker run -it -v /data:/data -v /home:/home -v /data16:/data16 --runtime=nvidia --name shukui-keras-dlib keras-dlib:shukui bash # run the container
+RUN apt update && \
+  apt install -yq python3-pip libgtk2.0-dev vim && \
+  pip3 install --upgrade pip && hash -r pip && \
+  pip3 install -r /tmp/requirements.txt
+```
+### base_image/requirements.txt
+```
+numpy==1.16.3
+opencv-python==4.1.0.25
+tensorflow-gpu==1.13.1
+Keras==2.2.4
+matplotlib==3.0.0
+```
+## build base image
+```
+docker build -f Dockerfile -t bmw-demo:shukui .
+```
+### Dockerfile
+```
+FROM bmw-demo:shukui
+# USER root 
+COPY raw_models /bmw-demo/raw_models
+COPY nauto4.mp4 /bmw-demo/nauto4.mp4
+COPY nauto_tmp4 /bmw-demo/nauto_tmp4
+COPY ReadMe.md /bmw-demo/ReadMe.md
+COPY utils.py /bmw-demo/utils.py
+COPY visualization.py /bmw-demo/visualization.py
 
-'''
+WORKDIR /bmw-demo
+```
+## Run the container
+```
+docker run -it -v /data:/data -v /data16:/data16 --runtime=nvidia --name bmw-0 bmw-demo:shukui bash
+```
