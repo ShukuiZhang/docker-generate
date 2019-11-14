@@ -1,7 +1,7 @@
-# how to create a docker container
+# How to create a docker container
 Introduce how to create a docker containfer from scratch.
 ## sample structure
-Assume a file structure looks like the following:
+Create a tree structure using bash command `tree -I *.jpg`, where `-I` is not to list any `*.jpg` files:
 ```
 ├── base_image
 │   ├── Dockerfile
@@ -12,6 +12,10 @@ Assume a file structure looks like the following:
 ├── utils.py
 ├── video.mp4
 └── visualization.py
+```
+## build base image
+```
+docker build -f Dockerfile -t bmw-demo:shukui .
 ```
 ### base_image/Dockerfile
 ```
@@ -32,10 +36,6 @@ tensorflow-gpu==1.13.1
 Keras==2.2.4
 matplotlib==3.0.0
 ```
-## build base image
-```
-docker build -f Dockerfile -t bmw-demo:shukui .
-```
 ### Dockerfile
 ```
 FROM bmw-demo:shukui
@@ -49,7 +49,11 @@ COPY visualization.py /bmw-demo/visualization.py
 
 WORKDIR /bmw-demo
 ```
+## build refined image
+```
+docker build -f Dockerfile -t bmw-demo-refine:shukui .
+```
 ## Run the container
 ```
-docker run -it -v /data:/data -v /data16:/data16 --runtime=nvidia --name bmw-0 bmw-demo:shukui bash
+docker run -it -v /data:/data -v /data16:/data16 --runtime=nvidia --name bmw-0 bmw-demo-refine:shukui bash
 ```
