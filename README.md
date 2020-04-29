@@ -57,3 +57,6 @@ docker build -f Dockerfile -t bmw-demo-refine:shukui .
 ```
 docker run -it -v /data:/data -v /data16:/data16 --runtime=nvidia --name bmw-0 bmw-demo-refine:shukui bash
 ```
+## Q&A:
+1. How to use docker without sudo?
+A: Add user to docker group. Ref: https://askubuntu.com/questions/477551/how-can-i-use-docker-without-sudo
